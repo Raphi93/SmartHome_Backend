@@ -1,4 +1,3 @@
-using Serilog;
 using SmartHome_Backend_NoSQL.Controllers;
 using SmartHome_Backend_NoSQL.Service;
 using SmartHome_Backend_NoSQL.Models;
