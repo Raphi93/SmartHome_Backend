@@ -87,17 +87,20 @@ namespace SmartHome_Backend_NoSQL.Service
                     {
                         --id;
                         var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
+
+                        weather._id = get._id;
+                        weather.id = get.id;
                         weather.tempMax = CalcTempMax(dayTime, weather);
                         weather.tempMin = CalcTempMin(dayTime, weather);
                         weather.windMax = CalcWindMax(dayTime, weather);
                         weather.windMin = CalcWindMin(dayTime, weather);
                         weather.humidityMax = CalcHumidityMax(dayTime, weather);
                         weather.humidityMin = CalcHumidityMin(dayTime, weather);
-                        weather.sunDuration = (weather.sunDuration - 14238) - yesterday.sunDuration;
-                        weather.rain = (weather.rain - 803) - yesterday.sunDuration;
+                        weather.sunDuration = weather.sunDuration - (14238 - yesterday.sunDuration);
+                        weather.rain = weather.rain - (803 - yesterday.sunDuration);
                         if (get.raining == true)
                             weather.raining = true;
-
+                        Console.WriteLine(weather);
                         _weather.ReplaceOne(x => x.daytime == dayTime, weather);
                     }
                 }
