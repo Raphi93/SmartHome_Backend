@@ -22,11 +22,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
 
         // GET api/<WeatherStationController>/5
         [HttpGet("{ID}")]
-        public ActionResult<WeatherAverageModel> Get(string _id)
+        public ActionResult<WeatherAverageModel> Get(string dayTime)
         {
             try
             {
-                WeatherAverageModel weathers = _weather.Get(_id);
+                WeatherAverageModel weathers = _weather.Get(dayTime);
                 if (weathers == null)
                     return NotFound();
                 return weathers;
@@ -40,15 +40,17 @@ namespace SmartHome_Backend_NoSQL.Controllers
 
         // POST api/<WeatherStationController>
         [HttpPost]
-        public void Post(WeatherAverageModel weather)
+        public IActionResult Post(WeatherAverageModel weather)
         {
             try
             {
                 _weather.Add(weather);
+                return CreatedAtAction(nameof(Get), new { dayTime = weather.daytime }, weather);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error occured, {ex.Message}");
+                return NotFound($"Error occured");
             }
         }
     }

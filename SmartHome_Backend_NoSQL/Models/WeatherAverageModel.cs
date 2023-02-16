@@ -21,5 +21,9 @@ namespace SmartHome_Backend_NoSQL.Models
         [BsonElement("Humidity")]
         [JsonPropertyName("humidity")]
         public double? humidity { get; set; }
+
+        [BsonElement("DayTime")]
+        [JsonPropertyName("dayTime")]
+        public string? daytime { get; set; }
     }
 }

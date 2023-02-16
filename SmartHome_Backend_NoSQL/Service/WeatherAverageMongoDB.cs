@@ -37,11 +37,11 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
-        public WeatherAverageModel Get(string _id)
+        public WeatherAverageModel Get(string dayTime)
         {
             try
             {
-                return _average.Find(x => x._id == _id).FirstOrDefault();
+                return _average.Find(x => x.daytime == dayTime).FirstOrDefault();
             }
             catch (MongoException ex)
             {
