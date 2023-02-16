@@ -38,17 +38,15 @@ namespace SmartHome_Backend_NoSQL.Controllers
 
         // POST api/<WeatherStationController>
         [HttpPost]
-        public IActionResult Post(IndoorTempAveregaModel weather)
+        public void Post(IndoorTempAveregaModel weather)
         {
             try
             {
                 _weather.Add(weather);
-                return CreatedAtAction(nameof(Get), new { dayTime = weather.daytime }, weather);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error occured, {ex.Message}");
-                return NotFound($"Error occured");
             }
         }
     }

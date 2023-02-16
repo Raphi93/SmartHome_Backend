@@ -110,7 +110,6 @@ namespace SmartHome_Backend_NoSQL.Service
                         weather.rain = weather.rain - (803 - yesterday.sunDuration);
                         if (get.raining == true)
                             weather.raining = true;
-                        Console.WriteLine(weather);
                         _weather.ReplaceOne(x => x.daytime == dayTime, weather);
                     }
                 }
