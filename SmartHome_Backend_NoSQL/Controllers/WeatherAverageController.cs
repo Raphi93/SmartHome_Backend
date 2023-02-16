@@ -40,17 +40,15 @@ namespace SmartHome_Backend_NoSQL.Controllers
 
         // POST api/<WeatherStationController>
         [HttpPost]
-        public IActionResult Post(WeatherAverageModel weather)
+        public void Post(WeatherAverageModel weather)
         {
             try
             {
                 _weather.Add(weather);
-                return CreatedAtAction(nameof(Get), new { _id = weather._id});
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error occured, {ex.Message}");
-                return NotFound($"Error occured, {ex.Message}");
             }
         }
     }
