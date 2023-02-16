@@ -10,6 +10,7 @@ namespace SmartHome_Backend_NoSQL.Service
 
         #region Prop und Kunstrucktor
         private readonly IMongoCollection<WeatherSationModel> _weather;
+        private readonly IMongoCollection<WeatherAverageModel> _average;
 
         public WeatherstationMongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
         {
@@ -21,6 +22,9 @@ namespace SmartHome_Backend_NoSQL.Service
 
             _weather = mongoDatabase.GetCollection<WeatherSationModel>(
                wsDatabaseSettings.Value.ServicesCollectionName);
+
+            _average = mongoDatabase.GetCollection<WeatherAverageModel>(
+               wsDatabaseSettings.Value.AverageCollectionName);
         }
         #endregion
 
@@ -56,6 +60,7 @@ namespace SmartHome_Backend_NoSQL.Service
         {
             var get = _weather.Find(x => true).Count();
             int id = Convert.ToInt32(get);
+            AverageCalc(id, weather);
             id++;
             weather.tempMin = weather.temp;
             weather.tempMax = weather.temp;
@@ -64,6 +69,7 @@ namespace SmartHome_Backend_NoSQL.Service
             weather.humidityMax = weather.humidity;
             weather.humidityMin = weather.humidity;
             weather.id= id;
+
             try
             {
                 _weather.InsertOne(weather);
@@ -188,6 +194,33 @@ namespace SmartHome_Backend_NoSQL.Service
             {
                 return (float)get.windMin;
             }
+        }
+
+        public void AverageCalc(int id, WeatherSationModel weathers)
+        {
+            var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
+            if (weathers != null)
+            {
+                double averageTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.temp));
+                double averageWind = Convert.ToDouble(_average.AsQueryable().Average(r => r.wind));
+                double averageHumidity = Convert.ToDouble(_average.AsQueryable().Average(r => r.humidity));
+                weathers.temp = averageTemp;
+                weathers.wind = averageWind;
+                weathers.humidity = averageHumidity;
+                weathers.daytime = yesterday.daytime;
+                weathers.rain = yesterday.rain;
+                weathers.raining = yesterday.raining;
+                weathers.id = id;
+                weathers._id = yesterday._id;
+                Update(yesterday.daytime, weathers);
+
+                _average.DeleteMany(x => true);
+            }
+            else
+            {
+                Console.WriteLine($"Could not find weather document with ID {id}");
+            }
+
         }
     }
 }

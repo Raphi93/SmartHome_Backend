@@ -7,5 +7,7 @@
         public string DatabaseName { get; set; } = null!;
 
         public string ServicesCollectionName { get; set; } = null!;
+
+        public string AverageCollectionName { get; set; } = null!;
     }
 }
