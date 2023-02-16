@@ -12,6 +12,8 @@ public class Program
                   builder.Configuration.GetSection("WeatherStationDatabase"));
         builder.Services.AddScoped<IWeatherstation, WeatherstationMongoDB>();
         builder.Services.AddScoped<IWeatherAverage, WeatherAverageMongoDB>();
+        builder.Services.AddScoped<ITempIndoor, TempIndoorMongoDB>();
+        builder.Services.AddScoped<ITempIndoorAverage, TempIndoorAverageMongoDB>();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>

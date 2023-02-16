@@ -9,5 +9,9 @@
         public string ServicesCollectionName { get; set; } = null!;
 
         public string AverageCollectionName { get; set; } = null!;
+
+        public string TempCollectionName { get; set; } = null!;
+
+        public string TempAverageCollectionName { get; set; } = null!;
     }
 }
