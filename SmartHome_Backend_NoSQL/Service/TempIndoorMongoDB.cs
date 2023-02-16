@@ -94,8 +94,8 @@ namespace SmartHome_Backend_NoSQL.Service
                     weather.id = get.id;
                     weather.floorTempMax = CalcWallsTempMax(dayTime, weather);
                     weather.floorTempMin = CalcWallsTempMin(dayTime, weather);
-                    weather.floorTempMax = CalcFloorTempMax(dayTime, weather);
-                    weather.floorTempMin = CalcFloorTempMin(dayTime, weather);
+                    weather.wallTempMax = CalcFloorTempMax(dayTime, weather);
+                    weather.wallTempMin = CalcFloorTempMin(dayTime, weather);
                     _temp.ReplaceOne(x => x.daytime == dayTime, weather);
 
                 }
