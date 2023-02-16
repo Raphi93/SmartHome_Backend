@@ -37,11 +37,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
 
         // GET api/<WeatherStationController>/5
         [HttpGet("Datum")]
-        public ActionResult<WeatherSationModel> Get(string date)
+        public ActionResult<WeatherSationModel> Get(string dayTime)
         {
             try
             {
-                WeatherSationModel weathers = _weather.Get(date);
+                WeatherSationModel weathers = _weather.Get(dayTime);
                 if (weathers == null)
                     return NotFound();
                 return weathers;

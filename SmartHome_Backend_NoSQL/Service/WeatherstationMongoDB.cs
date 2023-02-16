@@ -54,12 +54,16 @@ namespace SmartHome_Backend_NoSQL.Service
 
         public void Add(WeatherSationModel weather)
         {
+            var get = _weather.Find(x => true).Count();
+            int id = Convert.ToInt32(get);
+            id++;
             weather.tempMin = weather.temp;
             weather.tempMax = weather.temp;
             weather.windMin = weather.wind;
             weather.windMax = weather.wind;
             weather.humidityMax = weather.humidity;
             weather.humidityMin = weather.humidity;
+            weather.id= id;
             try
             {
                 _weather.InsertOne(weather);
@@ -78,6 +82,9 @@ namespace SmartHome_Backend_NoSQL.Service
                 var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
                 if (get != null)
                 {
+                    int id = (int)weather.id;
+                    --id;
+                    var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
                     weather._id = get._id;
                     weather.tempMax = CalcTempMax(dayTime, weather);
                     weather.tempMin = CalcTempMin(dayTime, weather);
@@ -85,6 +92,8 @@ namespace SmartHome_Backend_NoSQL.Service
                     weather.windMin = CalcWindMin(dayTime, weather);
                     weather.humidityMax = CalcHumidityMax(dayTime, weather);
                     weather.humidityMin = CalcHumidityMin(dayTime, weather);
+                    weather.sunDuration = (weather.sunDuration - 14238) - yesterday.sunDuration;
+                    weather.rain = (weather.rain - 803) - yesterday.sunDuration;
                     if (get.raining == true)
                         weather.raining = true;
 
