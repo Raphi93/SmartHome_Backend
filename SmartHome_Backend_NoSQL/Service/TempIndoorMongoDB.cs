@@ -164,8 +164,10 @@ namespace SmartHome_Backend_NoSQL.Service
                 var count = _average.Find(x => true).Count();
                 if (count != 0)
                 {
-                    double averageTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.floorTemp));
-                    double averageWind = Convert.ToDouble(_average.AsQueryable().Average(r => r.wallTemp));
+                    double averageFloorTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.floorTemp));
+                    double averageWallTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.wallTemp));
+                    weather.floorTemp = averageFloorTemp;
+                    weather.wallTemp = averageWallTemp;
 
                     Update(yesterday.daytime, weather);
 
