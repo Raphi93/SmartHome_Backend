@@ -204,20 +204,24 @@ namespace SmartHome_Backend_NoSQL.Service
             var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
             if (weathers != null)
             {
-                double averageTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.temp));
-                double averageWind = Convert.ToDouble(_average.AsQueryable().Average(r => r.wind));
-                double averageHumidity = Convert.ToDouble(_average.AsQueryable().Average(r => r.humidity));
-                weathers.temp = averageTemp;
-                weathers.wind = averageWind;
-                weathers.humidity = averageHumidity;
-                weathers.daytime = yesterday.daytime;
-                weathers.rain = yesterday.rain;
-                weathers.raining = yesterday.raining;
-                weathers.id = id;
-                weathers._id = yesterday._id;
-                Update(yesterday.daytime, weathers);
+                var count = _average.Find(x => true).Count();
+                if (count != 0)
+                {
+                    var averageTemp = _average.AsQueryable().Average(r => r.temp);
+                    var averageWind = _average.AsQueryable().Average(r => r.wind);
+                    var averageHumidity = _average.AsQueryable().Average(r => r.humidity);
+                    weathers.temp = averageTemp;
+                    weathers.wind = averageWind;
+                    weathers.humidity = averageHumidity;
+                    weathers.daytime = yesterday.daytime;
+                    weathers.rain = yesterday.rain;
+                    weathers.raining = yesterday.raining;
+                    weathers.id = id;
+                    weathers._id = yesterday._id;
+                    Update(yesterday.daytime, weathers);
 
-                _average.DeleteMany(x => true);
+                    _average.DeleteMany(x => true);
+                }
             }
             else
             {

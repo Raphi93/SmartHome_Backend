@@ -161,12 +161,16 @@ namespace SmartHome_Backend_NoSQL.Service
             var yesterday = _temp.Find(x => x.id == id).FirstOrDefault();
             if (weather != null)
             {
-                double averageTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.floorTemp));
-                double averageWind = Convert.ToDouble(_average.AsQueryable().Average(r => r.wallTemp));
+                var count = _average.Find(x => true).Count();
+                if (count != 0)
+                {
+                    double averageTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.floorTemp));
+                    double averageWind = Convert.ToDouble(_average.AsQueryable().Average(r => r.wallTemp));
 
-                Update(yesterday.daytime, weather);
+                    Update(yesterday.daytime, weather);
 
-                _average.DeleteMany(x => true);
+                    _average.DeleteMany(x => true);
+                }
             }
             else
             {
