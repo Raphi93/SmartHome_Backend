@@ -22,11 +22,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
 
         // GET api/<WeatherStationController>/5
         [HttpGet("{ID}")]
-        public ActionResult<WeatherSationModel> Get(string _id)
+        public ActionResult<WeatherAverageModel> Get(string _id)
         {
             try
             {
-                WeatherSationModel weathers = _weather.Get(_id);
+                WeatherAverageModel weathers = _weather.Get(_id);
                 if (weathers == null)
                     return NotFound();
                 return weathers;
