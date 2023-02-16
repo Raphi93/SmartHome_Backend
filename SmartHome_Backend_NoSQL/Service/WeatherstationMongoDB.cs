@@ -82,22 +82,24 @@ namespace SmartHome_Backend_NoSQL.Service
                 var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
                 if (get != null)
                 {
-                    int id = (int)weather.id;
-                    --id;
-                    var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
-                    weather._id = get._id;
-                    weather.tempMax = CalcTempMax(dayTime, weather);
-                    weather.tempMin = CalcTempMin(dayTime, weather);
-                    weather.windMax = CalcWindMax(dayTime, weather);
-                    weather.windMin = CalcWindMin(dayTime, weather);
-                    weather.humidityMax = CalcHumidityMax(dayTime, weather);
-                    weather.humidityMin = CalcHumidityMin(dayTime, weather);
-                    weather.sunDuration = (weather.sunDuration - 14238) - yesterday.sunDuration;
-                    weather.rain = (weather.rain - 803) - yesterday.sunDuration;
-                    if (get.raining == true)
-                        weather.raining = true;
+                    int id = Convert.ToInt32(get.id);
+                    if (id > 0)
+                    {
+                        var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
+                        weather._id = get._id;
+                        weather.tempMax = CalcTempMax(dayTime, weather);
+                        weather.tempMin = CalcTempMin(dayTime, weather);
+                        weather.windMax = CalcWindMax(dayTime, weather);
+                        weather.windMin = CalcWindMin(dayTime, weather);
+                        weather.humidityMax = CalcHumidityMax(dayTime, weather);
+                        weather.humidityMin = CalcHumidityMin(dayTime, weather);
+                        weather.sunDuration = (weather.sunDuration - 14238) - yesterday.sunDuration;
+                        weather.rain = (weather.rain - 803) - yesterday.sunDuration;
+                        if (get.raining == true)
+                            weather.raining = true;
 
-                    _weather.ReplaceOne(x => x.daytime == dayTime, weather);
+                        _weather.ReplaceOne(x => x.daytime == dayTime, weather);
+                    }
                 }
             }
             catch (MongoException ex)
