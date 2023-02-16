@@ -30,8 +30,8 @@ namespace SmartHome_Backend_NoSQL.Models
         [JsonPropertyName("wallTempMin")]
         public double? wallTempMin { get; set; }
 
-        [BsonElement("FloorTemp")]
-        [JsonPropertyName("floorTemp")]
+        [BsonElement("FloorTempMin")]
+        [JsonPropertyName("floorTempMin")]
         public double? floorTempMin { get; set; }
 
         [BsonElement("DayTime")]

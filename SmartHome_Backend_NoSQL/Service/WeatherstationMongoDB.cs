@@ -59,6 +59,10 @@ namespace SmartHome_Backend_NoSQL.Service
         public void Add(WeatherSationModel weather)
         {
             var get = _weather.Find(x => true).Count();
+            if (get == null)
+            {
+                get = 1;
+            }
             int id = Convert.ToInt32(get);
             AverageCalc(id, weather);
             id++;

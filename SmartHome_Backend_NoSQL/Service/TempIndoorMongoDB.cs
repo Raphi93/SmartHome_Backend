@@ -20,25 +20,30 @@ namespace SmartHome_Backend_NoSQL.Service
                 wsDatabaseSettings.Value.DatabaseName);
 
             _temp = mongoDatabase.GetCollection<IndoorTempModel>(
-               wsDatabaseSettings.Value.ServicesCollectionName);
+               wsDatabaseSettings.Value.TempCollectionName);
 
             _average = mongoDatabase.GetCollection<IndoorTempAveregaModel>(
-               wsDatabaseSettings.Value.AverageCollectionName);
+               wsDatabaseSettings.Value.TempAverageCollectionName);
         }
         #endregion
 
         public void Add(IndoorTempModel weather)
         {
             var get = _temp.Find(x => true).Count();
+            if (get == null)
+            {
+                get = 0;
+            }
             int id = Convert.ToInt32(get);
-            AverageCalc(id, weather);
+            if (get != 0) {
+                AverageCalc(id, weather);
+            }
             id++;
             weather.floorTempMin = weather.floorTemp;
             weather.floorTempMax = weather.floorTemp;
             weather.wallTempMin = weather.wallTemp;
             weather.wallTempMax = weather.wallTemp;
             weather.id = id;
-
             try
             {
                 _temp.InsertOne(weather);
