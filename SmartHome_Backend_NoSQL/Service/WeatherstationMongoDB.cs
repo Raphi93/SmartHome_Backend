@@ -87,7 +87,6 @@ namespace SmartHome_Backend_NoSQL.Service
                     {
                         --id;
                         var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
-                        weather._id = get._id;
                         weather.tempMax = CalcTempMax(dayTime, weather);
                         weather.tempMin = CalcTempMin(dayTime, weather);
                         weather.windMax = CalcWindMax(dayTime, weather);
