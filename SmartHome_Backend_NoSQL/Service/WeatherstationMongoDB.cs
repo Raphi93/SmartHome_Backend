@@ -93,11 +93,11 @@ namespace SmartHome_Backend_NoSQL.Service
                 if (get != null)
                 {
                     int id = Convert.ToInt32(get.id);
-                    --id;
                     if (id > 0)
                     {
-                        var lastRain = _weather.Find(x => x.id == id).ToList().Sum(x => x.rain);
-                        var lastDaySun = _weather.Find(x => x.id == id).ToList().Sum(x => x.sunDuration);
+                        var filter = Builders<WeatherSationModel>.Filter.Ne("dayTime", dayTime);
+                        var lastRain = _weather.Find(filter).ToList().Sum(x => x.rain);
+                        var lastDaySun = _weather.Find(filter).ToList().Sum(x => x.sunDuration);
                         weather.sunDuration = weather.sunDuration - lastDaySun;
                         weather.rain = weather.rain - lastRain;
                     }
