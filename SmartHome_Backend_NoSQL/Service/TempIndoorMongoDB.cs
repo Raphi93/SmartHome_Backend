@@ -30,12 +30,13 @@ namespace SmartHome_Backend_NoSQL.Service
         public void Add(IndoorTempModel weather)
         {
             var get = _temp.Find(x => true).Count();
+            int id = Convert.ToInt32(get);
             if (get == null)
             {
                 get = 0;
             }
-            int id = Convert.ToInt32(get);
-            if (get != 0) {
+            if (get != 0)
+            {
                 AverageCalc(id, weather);
             }
             id++;

@@ -61,7 +61,7 @@ namespace SmartHome_Backend_NoSQL.Service
             var get = _weather.Find(x => true).Count();
             if (get == null)
             {
-                get = 1;
+                get = 0;
             }
             int id = Convert.ToInt32(get);
             AverageCalc(id, weather);
@@ -72,7 +72,7 @@ namespace SmartHome_Backend_NoSQL.Service
             weather.windMax = weather.wind;
             weather.humidityMax = weather.humidity;
             weather.humidityMin = weather.humidity;
-            weather.id= id;
+            weather.id = id;
 
             try
             {
@@ -93,26 +93,31 @@ namespace SmartHome_Backend_NoSQL.Service
                 if (get != null)
                 {
                     int id = Convert.ToInt32(get.id);
+                    --id;
                     if (id > 0)
                     {
-                        --id;
                         var lastRain = _weather.Find(x => x.id == id).ToList().Sum(x => x.rain);
                         var lastDaySun = _weather.Find(x => x.id == id).ToList().Sum(x => x.sunDuration);
-
-                        weather._id = get._id;
-                        weather.id = get.id;
-                        weather.tempMax = CalcTempMax(dayTime, weather);
-                        weather.tempMin = CalcTempMin(dayTime, weather);
-                        weather.windMax = CalcWindMax(dayTime, weather);
-                        weather.windMin = CalcWindMin(dayTime, weather);
-                        weather.humidityMax = CalcHumidityMax(dayTime, weather);
-                        weather.humidityMin = CalcHumidityMin(dayTime, weather);
                         weather.sunDuration = weather.sunDuration - lastDaySun;
                         weather.rain = weather.rain - lastRain;
-                        if (get.raining == true)
-                            weather.raining = true;
-                        _weather.ReplaceOne(x => x.daytime == dayTime, weather);
                     }
+                    else
+                    {
+                        weather.sunDuration = get.sunDuration;
+                        weather.rain = get.rain;
+                    }
+
+                    weather._id = get._id;
+                    weather.id = get.id;
+                    weather.tempMax = CalcTempMax(dayTime, weather);
+                    weather.tempMin = CalcTempMin(dayTime, weather);
+                    weather.windMax = CalcWindMax(dayTime, weather);
+                    weather.windMin = CalcWindMin(dayTime, weather);
+                    weather.humidityMax = CalcHumidityMax(dayTime, weather);
+                    weather.humidityMin = CalcHumidityMin(dayTime, weather);
+                    if (get.raining == true)
+                        weather.raining = true;
+                    _weather.ReplaceOne(x => x.daytime == dayTime, weather);
                 }
             }
             catch (MongoException ex)
