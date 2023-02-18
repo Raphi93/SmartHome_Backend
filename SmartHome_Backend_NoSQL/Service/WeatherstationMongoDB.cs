@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using SmartHome_Backend_NoSQL.Models;
 using System;
+using System.Linq;
 
 namespace SmartHome_Backend_NoSQL.Service
 {
@@ -93,13 +94,26 @@ namespace SmartHome_Backend_NoSQL.Service
                 if (get != null)
                 {
                     int id = Convert.ToInt32(get.id);
-                    if (id > 0)
+                    if (id > 1)
                     {
-                        var filter = Builders<WeatherSationModel>.Filter.Ne("dayTime", dayTime);
-                        var lastRain = _weather.Find(filter).ToList().Sum(x => x.rain);
-                        var lastDaySun = _weather.Find(filter).ToList().Sum(x => x.sunDuration);
-                        weather.sunDuration = weather.sunDuration - lastDaySun;
-                        weather.rain = weather.rain - lastRain;
+                        if (get.rain > 5) 
+                        {
+                            var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
+                            weather.rain = weather.rain - lastRain;
+                        }
+                        else
+                        {
+                            get.rain = get.rain;
+                        }
+                        if (get.wind > 5)
+                        {
+                            var lastDaySun = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration);
+                            weather.sunDuration = weather.sunDuration - lastDaySun;
+                        }
+                        else
+                        {
+                            get.sunDuration = get.sunDuration;
+                        }
                     }
                     else
                     {
@@ -222,6 +236,7 @@ namespace SmartHome_Backend_NoSQL.Service
                     weathers.daytime = yesterday.daytime;
                     weathers.rain = yesterday.rain;
                     weathers.raining = yesterday.raining;
+                    weathers.sunDuration = yesterday.sunDuration;
                     weathers.id = id;
                     weathers._id = yesterday._id;
                     Update(yesterday.daytime, weathers);
