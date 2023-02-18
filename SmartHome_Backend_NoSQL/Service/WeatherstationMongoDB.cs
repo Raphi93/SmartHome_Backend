@@ -96,29 +96,15 @@ namespace SmartHome_Backend_NoSQL.Service
                     int id = Convert.ToInt32(get.id);
                     if (id > 1)
                     {
-                        if (get.rain > 5) 
-                        {
-                            var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
-                            weather.rain = weather.rain - lastRain;
-                        }
-                        else
-                        {
-                            get.rain = get.rain;
-                        }
-                        if (get.wind > 5)
-                        {
-                            var lastDaySun = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration);
-                            weather.sunDuration = weather.sunDuration - lastDaySun;
-                        }
-                        else
-                        {
-                            get.sunDuration = get.sunDuration;
-                        }
+                        weather.rain = CheckRain(weather, dayTime);
+                        weather.sunDuration = CheckSunDur(weather, dayTime);
                     }
                     else
                     {
-                        weather.sunDuration = get.sunDuration;
-                        weather.rain = get.rain;
+                        double sun = (double)weather.sunDuration;
+                        sun = sun / 60;
+                        weather.sunDuration = sun;
+                        weather.rain = weather.rain;
                     }
 
                     weather._id = get._id;
@@ -138,6 +124,38 @@ namespace SmartHome_Backend_NoSQL.Service
             {
                 Console.WriteLine($"Error occured, {ex.Message}");
                 return;
+            }
+        }
+
+        private double CheckSunDur(WeatherSationModel weather, string dayTime)
+        {
+            if (weather.wind > 10)
+            {
+                var lastDaySun = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration);
+                var lastdaySun = lastDaySun * 60;
+                double sun = (double)(weather.sunDuration - lastDaySun);
+                sun = sun / 60;
+                return sun;
+            }
+            else
+            {
+                double sun = (double)weather.sunDuration;
+                sun = sun / 60;
+                return sun;
+            }
+        }
+
+        public double CheckRain(WeatherSationModel weather, string dayTime)
+        {
+            if (weather.rain > 10)
+            {
+                var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
+                double rain = (double)(weather.rain - lastRain);
+                return rain;
+            }
+            else
+            {
+                return (double)weather.rain;
             }
         }
 
