@@ -129,11 +129,11 @@ namespace SmartHome_Backend_NoSQL.Service
 
         private double CheckSunDur(WeatherSationModel weather, string dayTime)
         {
-            if (weather.wind > 10)
+            if (weather.sunDuration > 10)
             {
-                var lastDaySun = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration);
-                var lastdaySun = lastDaySun * 60;
-                double sun = (double)(weather.sunDuration - lastDaySun);
+                double lastDaySun = (Double)(_weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration));
+                double lastDayMin = lastDaySun * 60;
+                double sun = (Double)(weather.sunDuration - lastDayMin);
                 sun = sun / 60;
                 return sun;
             }
