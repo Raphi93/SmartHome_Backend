@@ -96,7 +96,8 @@ namespace SmartHome_Backend_NoSQL.Service
                     if (id > 0)
                     {
                         --id;
-                        var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
+                        var lastRain = _weather.Find(x => x.id == id).ToList().Sum(x => x.rain);
+                        var lastDaySun = _weather.Find(x => x.id == id).ToList().Sum(x => x.sunDuration);
 
                         weather._id = get._id;
                         weather.id = get.id;
@@ -106,8 +107,8 @@ namespace SmartHome_Backend_NoSQL.Service
                         weather.windMin = CalcWindMin(dayTime, weather);
                         weather.humidityMax = CalcHumidityMax(dayTime, weather);
                         weather.humidityMin = CalcHumidityMin(dayTime, weather);
-                        weather.sunDuration = weather.sunDuration - (14238 - yesterday.sunDuration);
-                        weather.rain = weather.rain - (803 - yesterday.sunDuration);
+                        weather.sunDuration = weather.sunDuration - lastDaySun;
+                        weather.rain = weather.rain - lastRain;
                         if (get.raining == true)
                             weather.raining = true;
                         _weather.ReplaceOne(x => x.daytime == dayTime, weather);
