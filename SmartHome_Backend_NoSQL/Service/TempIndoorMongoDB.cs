@@ -35,11 +35,9 @@ namespace SmartHome_Backend_NoSQL.Service
             {
                 get = 0;
             }
-            if (get != 0)
-            {
-                AverageCalc(id, weather);
-            }
+            AverageCalc(id, weather);
             id++;
+            weather._id = "";
             weather.floorTempMin = weather.floorTemp;
             weather.floorTempMax = weather.floorTemp;
             weather.wallTempMin = weather.wallTemp;

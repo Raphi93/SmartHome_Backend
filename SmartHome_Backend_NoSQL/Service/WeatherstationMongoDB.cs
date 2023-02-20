@@ -29,6 +29,10 @@ namespace SmartHome_Backend_NoSQL.Service
         }
         #endregion
 
+       /// <summary>
+       /// GetAll bringt alle daten 
+       /// </summary>
+       /// <returns></returns>
         public List<WeatherSationModel> GetAll()
         {
             try
@@ -44,6 +48,11 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        /// <summary>
+        /// Bringt die Daten mit dem Datum
+        /// </summary>
+        /// <param name="daytime"></param>
+        /// <returns></returns>
         public WeatherSationModel Get(string daytime)
         {
             try
@@ -57,6 +66,10 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        /// <summary>
+        /// ADD Mtehode wo eine neue zeile einfügt
+        /// </summary>
+        /// <param name="weather"></param>
         public void Add(WeatherSationModel weather)
         {
             var get = _weather.Find(x => true).Count();
@@ -67,6 +80,7 @@ namespace SmartHome_Backend_NoSQL.Service
             int id = Convert.ToInt32(get);
             AverageCalc(id, weather);
             id++;
+            weather._id = "";
             weather.tempMin = weather.temp;
             weather.tempMax = weather.temp;
             weather.windMin = weather.wind;
@@ -86,6 +100,12 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+
+        /// <summary>
+        /// Update wo die daten Veränder
+        /// </summary>
+        /// <param name="dayTime"></param>
+        /// <param name="weather"></param>
         public void Update(string dayTime, WeatherSationModel weather)
         {
             try
@@ -106,7 +126,6 @@ namespace SmartHome_Backend_NoSQL.Service
                         weather.sunDuration = sun;
                         weather.rain = weather.rain;
                     }
-
                     weather._id = get._id;
                     weather.id = get.id;
                     weather.tempMax = CalcTempMax(dayTime, weather);
@@ -119,6 +138,10 @@ namespace SmartHome_Backend_NoSQL.Service
                         weather.raining = true;
                     _weather.ReplaceOne(x => x.daytime == dayTime, weather);
                 }
+                else
+                {
+                    Console.WriteLine($"Wurde nicht Gefunden mit ID {weather.id}");
+                }
             }
             catch (MongoException ex)
             {
@@ -127,6 +150,12 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        /// <summary>
+        /// Check SonneDauer wo die daten Prüft und das richtige resultat zurückgibt
+        /// </summary>
+        /// <param name="weather"></param>
+        /// <param name="dayTime"></param>
+        /// <returns></returns>
         private double CheckSunDur(WeatherSationModel weather, string dayTime)
         {
             if (weather.sunDuration > 10)
@@ -139,12 +168,19 @@ namespace SmartHome_Backend_NoSQL.Service
             }
             else
             {
+                Console.WriteLine("Aufpassen daten Stimmen nicht mehr"); 
                 double sun = (double)weather.sunDuration;
                 sun = sun / 60;
                 return sun;
             }
         }
 
+        /// <summary>
+        /// Prüft wegen des Regens dases Eine Korecktes Resultate zurückgibt
+        /// </summary>
+        /// <param name="weather"></param>
+        /// <param name="dayTime"></param>
+        /// <returns></returns>
         public double CheckRain(WeatherSationModel weather, string dayTime)
         {
             if (weather.rain > 10)
@@ -155,6 +191,7 @@ namespace SmartHome_Backend_NoSQL.Service
             }
             else
             {
+                Console.WriteLine("Aufpassen daten Stimmen nicht mehr");
                 return (double)weather.rain;
             }
         }
@@ -240,7 +277,7 @@ namespace SmartHome_Backend_NoSQL.Service
         public void AverageCalc(int id, WeatherSationModel weathers)
         {
             var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();
-            if (weathers != null)
+            if (yesterday != null)
             {
                 var count = _average.Find(x => true).Count();
                 if (count != 0)
@@ -255,18 +292,17 @@ namespace SmartHome_Backend_NoSQL.Service
                     weathers.rain = yesterday.rain;
                     weathers.raining = yesterday.raining;
                     weathers.sunDuration = yesterday.sunDuration;
+                    weathers.daytime = yesterday.daytime;
                     weathers.id = id;
                     weathers._id = yesterday._id;
                     Update(yesterday.daytime, weathers);
-
                     _average.DeleteMany(x => true);
                 }
             }
             else
             {
-                Console.WriteLine($"Could not find weather document with ID {id}");
+                Console.WriteLine($"Wurde nicht Gefunden mit ID {id}");
             }
-
         }
     }
 }
