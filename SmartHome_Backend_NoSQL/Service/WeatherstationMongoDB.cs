@@ -73,12 +73,8 @@ namespace SmartHome_Backend_NoSQL.Service
         public void Add(WeatherSationModel weather)
         {
             var get = _weather.Find(x => true).Count();
-            if (get == null)
-            {
-                get = 0;
-            }
+ 
             int id = Convert.ToInt32(get);
-            AverageCalc(id, weather);
             id++;
             weather._id = "";
             weather.tempMin = weather.temp;
@@ -92,6 +88,11 @@ namespace SmartHome_Backend_NoSQL.Service
             try
             {
                 _weather.InsertOne(weather);
+                id--;
+                if (id > 1)
+                {
+                    AverageCalc(id, weather);
+                }
             }
             catch (NullReferenceException ex)
             {

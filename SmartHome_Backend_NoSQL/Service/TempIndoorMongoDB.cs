@@ -35,10 +35,6 @@ namespace SmartHome_Backend_NoSQL.Service
             {
                 id = 0;
             }
-            else if (id > 1)
-            {
-                AverageCalc(id, weather);
-            }
             id++;
             weather._id = "";
             weather.floorTempMin = weather.floorTemp;
@@ -49,6 +45,11 @@ namespace SmartHome_Backend_NoSQL.Service
             try
             {
                 _temp.InsertOne(weather);
+                id--;
+                if (id > 1)
+                {
+                    AverageCalc(id, weather);
+                }
             }
             catch (NullReferenceException ex)
             {
@@ -170,6 +171,8 @@ namespace SmartHome_Backend_NoSQL.Service
                     double averageWallTemp = Convert.ToDouble(_average.AsQueryable().Average(r => r.wallTemp));
                     weather.floorTemp = averageFloorTemp;
                     weather.wallTemp = averageWallTemp;
+                    weather.id = id;
+                    weather._id = yesterday._id;
 
                     Update(yesterday.daytime, weather);
 
