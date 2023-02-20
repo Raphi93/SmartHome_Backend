@@ -33,9 +33,12 @@ namespace SmartHome_Backend_NoSQL.Service
             int id = Convert.ToInt32(get);
             if (get == null)
             {
-                get = 0;
+                id = 0;
             }
-            AverageCalc(id, weather);
+            else if (id > 1)
+            {
+                AverageCalc(id, weather);
+            }
             id++;
             weather._id = "";
             weather.floorTempMin = weather.floorTemp;
