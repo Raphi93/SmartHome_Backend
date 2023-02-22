@@ -13,16 +13,16 @@ Führen Sie das Projekt in Visual Studio aus.
 Verwendung
 Die Wetterdaten-API bietet die folgenden Endpunkte:
 
-GET api/WeatherStation: Ruft alle Wetterdaten von der Wetterstation ab.
-GET api/TempIndoor: Ruft alle Wetterdaten von der Innentemperatur ab.
-GET api/WeatherStation/Datum?dayTime=18.2.23: Ruft alle Wetterdaten von der Wetterstation an einem bestimmten Datum ab.
-GET api/TempIndoor/Datum?dayTime=18.2.23: Ruft alle Wetterdaten von der Innentemperatur an einem bestimmten Datum ab.
-POST api/WeatherStation: Sendet Wetterdaten von der Wetterstation an die API, die dann in MongoDB gespeichert werden.
-POST api/TempIndoor: Sendet Wetterdaten von der Innentemperatur an die API, die dann in MongoDB gespeichert werden.
-PUT api/WeatherStation/Datum?dayTime=18.2.23: Aktualisiert Wetterdaten von der Wetterstation an einem bestimmten Datum.
-PUT api/TempIndoor/Datum?dayTime=18.2.23: Aktualisiert Wetterdaten von der Innentemperatur an einem bestimmten Datum.
-GET api/WeatherAverage/Datum?dayTime=18.2.23: Ruft den Durchschnittswert aller Wetterdaten von der Wetterstation an einem bestimmten Datum ab.
-GET api/TempIndoorAverage/Datum?dayTime=18.2.23: Ruft den Durchschnittswert aller Wetterdaten von der Innentemperatur an einem bestimmten Datum ab.
+- GET api/WeatherStation: Ruft alle Wetterdaten von der Wetterstation ab.
+- GET api/TempIndoor: Ruft alle Wetterdaten von der Innentemperatur ab.
+- GET api/WeatherStation/Datum?dayTime=18.2.23: Ruft alle Wetterdaten von der Wetterstation an einem bestimmten Datum ab.
+- GET api/TempIndoor/Datum?dayTime=18.2.23: Ruft alle Wetterdaten von der Innentemperatur an einem bestimmten Datum ab.
+- POST api/WeatherStation: Sendet Wetterdaten von der Wetterstation an die API, die dann in MongoDB gespeichert werden.- 
+- POST api/TempIndoor: Sendet Wetterdaten von der Innentemperatur an die API, die dann in MongoDB gespeichert werden.
+- PUT api/WeatherStation/Datum?dayTime=18.2.23: Aktualisiert Wetterdaten von der Wetterstation an einem bestimmten Datum.
+- PUT api/TempIndoor/Datum?dayTime=18.2.23: Aktualisiert Wetterdaten von der Innentemperatur an einem bestimmten Datum.
+- GET api/WeatherAverage/Datum?dayTime=18.2.23: Ruft den Durchschnittswert aller Wetterdaten von der Wetterstation an einem bestimmten Datum ab.
+- GET api/TempIndoorAverage/Datum?dayTime=18.2.23: Ruft den Durchschnittswert aller Wetterdaten von der Innentemperatur an einem bestimmten Datum ab.
 
 Die Wetterdaten-API erwartet, dass die Wetterdaten im JSON-Format gesendet werden und folgende Felder enthalten:
 
