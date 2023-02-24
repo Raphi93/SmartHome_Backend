@@ -96,6 +96,9 @@ namespace SmartHome_Backend_NoSQL.Service
             weather.humidityMin = weather.humidity;
             weather.id = id;
 
+            double sun = (double)weather.sunDuration;
+            weather.sunDuration = (60 * sun);
+
             try
             {
                 _weather.InsertOne(weather);
