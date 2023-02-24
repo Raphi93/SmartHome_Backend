@@ -97,7 +97,7 @@ namespace SmartHome_Backend_NoSQL.Service
             weather.id = id;
 
             double sun = (double)weather.sunDuration;
-            weather.sunDuration = (60 * sun);
+            weather.sunDuration = (sun / 60);
 
             try
             {
