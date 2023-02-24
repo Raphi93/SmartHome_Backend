@@ -27,12 +27,16 @@ namespace SmartHome_Backend_NoSQL.Service
             _average = mongoDatabase.GetCollection<WeatherAverageModel>(
                wsDatabaseSettings.Value.AverageCollectionName);
         }
+
+        public WeatherstationMongoDB()
+        {
+        }
         #endregion
 
-       /// <summary>
-       /// GetAll bringt alle daten 
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// GetAll bringt alle daten 
+        /// </summary>
+        /// <returns></returns>
         public List<WeatherSationModel> GetAll()
         {
             try
@@ -75,6 +79,13 @@ namespace SmartHome_Backend_NoSQL.Service
             var get = _weather.Find(x => true).Count();
  
             int id = Convert.ToInt32(get);
+            if (id != 0)
+
+            {
+                var oldDuk = _weather.Find(x => x.id == id).FirstOrDefault();
+                weather.sunDurSOP = oldDuk.sunDurSOP;
+                weather.rainDurSOP = oldDuk.rainDurSOP;
+            }
             id++;
             weather._id = "";
             weather.tempMin = weather.temp;
@@ -135,6 +146,8 @@ namespace SmartHome_Backend_NoSQL.Service
                     weather.windMin = CalcWindMin(dayTime, weather);
                     weather.humidityMax = CalcHumidityMax(dayTime, weather);
                     weather.humidityMin = CalcHumidityMin(dayTime, weather);
+                    weather.sunDurSOP = get.sunDurSOP;
+                    weather.rainDurSOP = get.rainDurSOP;
                     if (get.raining == true)
                         weather.raining = true;
                     _weather.ReplaceOne(x => x.daytime == dayTime, weather);
@@ -159,21 +172,18 @@ namespace SmartHome_Backend_NoSQL.Service
         /// <returns></returns>
         private double CheckSunDur(WeatherSationModel weather, string dayTime)
         {
-            if (weather.sunDuration > 10)
-            {
-                double lastDaySun = (Double)(_weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration));
-                double lastDayMin = lastDaySun * 60;
-                double sun = (Double)(weather.sunDuration - lastDayMin);
-                sun = sun / 60;
-                return sun;
+            if (weather.sunDuration < 10)
+            { 
+                int suny = Convert.ToInt32(weather.sunDurSOP);
+                suny++;
+                weather.sunDurSOP = suny;
             }
-            else
-            {
-                Console.WriteLine("Aufpassen daten Stimmen nicht mehr"); 
-                double sun = (double)weather.sunDuration;
-                sun = sun / 60;
-                return sun;
-            }
+
+            double lastDaySun = (Double)(_weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration));
+            double lastDayMin = lastDaySun * 60 + (1600 * weather.sunDurSOP);
+            double sun = (Double)(weather.sunDuration - lastDayMin);
+            sun = sun / 60;
+            return sun;
         }
 
         /// <summary>
@@ -184,17 +194,16 @@ namespace SmartHome_Backend_NoSQL.Service
         /// <returns></returns>
         public double CheckRain(WeatherSationModel weather, string dayTime)
         {
-            if (weather.rain > 10)
+            if (weather.rain < 10)
             {
-                var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
-                double rain = (double)(weather.rain - lastRain);
-                return rain;
+                int rains = Convert.ToInt32(weather.rainDurSOP);
+                rains++;
+                weather.rainDurSOP = rains;
             }
-            else
-            {
-                Console.WriteLine("Aufpassen daten Stimmen nicht mehr");
-                return (double)weather.rain;
-            }
+
+            var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
+            double rain = (double)(weather.rain - lastRain) + (1600 * weather.sunDurSOP); ;
+            return rain;
         }
 
         private double? CalcHumidityMax(string dayTime, WeatherSationModel weather)
@@ -290,9 +299,9 @@ namespace SmartHome_Backend_NoSQL.Service
                     weathers.wind = averageWind;
                     weathers.humidity = averageHumidity;
                     weathers.daytime = yesterday.daytime;
-                    weathers.rain = yesterday.rain;
+                    weathers.rain = weathers.rain;
                     weathers.raining = yesterday.raining;
-                    weathers.sunDuration = yesterday.sunDuration;
+                    weathers.sunDuration = weathers.sunDuration;
                     weathers.daytime = yesterday.daytime;
                     weathers.id = id;
                     weathers._id = yesterday._id;

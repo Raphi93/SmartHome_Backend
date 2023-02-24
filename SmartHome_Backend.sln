@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome_Backend_NoSQL", "SmartHome_Backend_NoSQL\SmartHome_Backend_NoSQL.csproj", "{E9AFD7C4-91E8-4118-9478-0B68892B3ABA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome_Backend_NoSQL", "SmartHome_Backend_NoSQL\SmartHome_Backend_NoSQL.csproj", "{E9AFD7C4-91E8-4118-9478-0B68892B3ABA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

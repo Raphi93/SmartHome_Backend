@@ -65,5 +65,14 @@ namespace SmartHome_Backend_NoSQL.Models
         [BsonElement("ID")]
         [JsonPropertyName("id")]
         public int? id { get; set; }
+
+        [BsonElement("SunDurSOP")]
+        [JsonPropertyName("sunDurSOP")]
+        public int sunDurSOP { get; set; } = 0;
+
+        [BsonElement("RainDurSOP")]
+        [JsonPropertyName("rainDurSOP")]
+        public int rainDurSOP { get; set; } = 0;
+
     }
 }
