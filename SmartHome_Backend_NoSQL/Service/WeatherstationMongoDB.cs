@@ -303,7 +303,7 @@ namespace SmartHome_Backend_NoSQL.Service
                     weathers.humidity = averageHumidity;
                     weathers.daytime = yesterday.daytime;
                     weathers.rain = weathers.rain;
-                    weathers.raining = yesterday.raining;
+                    weathers.raining = weathers.raining;
                     weathers.sunDuration = weathers.sunDuration;
                     weathers.daytime = yesterday.daytime;
                     weathers.id = id;
