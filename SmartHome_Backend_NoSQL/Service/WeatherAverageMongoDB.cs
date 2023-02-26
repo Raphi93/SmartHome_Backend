@@ -24,6 +24,10 @@ namespace SmartHome_Backend_NoSQL.Service
         }
         #endregion
 
+        /// <summary>
+        /// Fügt ein neues Wetterdurchschnittsmodell zur Datenbank hinzu
+        /// </summary>
+        /// <param name="weather">Das zu speichernde Wetterdurchschnittsmodell</param>
         public void Add(WeatherAverageModel weather)
         {
             try
@@ -37,6 +41,11 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        /// <summary>
+        /// Liefert ein WeatherAverageModel anhand eines Tageszeitschlüssels
+        /// </summary>
+        /// <param name="dayTime">Tageszeitschlüssel</param>
+        /// <returns>Das WeatherAverageModel mit dem Tageszeitschlüssel oder null, wenn kein passendes Model gefunden wurde</returns>
         public WeatherAverageModel Get(string dayTime)
         {
             try

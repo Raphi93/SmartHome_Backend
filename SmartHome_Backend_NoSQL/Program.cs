@@ -1,6 +1,10 @@
 using SmartHome_Backend_NoSQL.Service;
 using SmartHome_Backend_NoSQL.Models;
 using Microsoft.OpenApi.Models;
+using ApiKeyCustomAttributes.Attributes;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using SmartHome_Backend_NoSQL.Atrributes;
 
 public class Program
 {
@@ -14,14 +18,24 @@ public class Program
         builder.Services.AddScoped<IWeatherAverage, WeatherAverageMongoDB>();
         builder.Services.AddScoped<ITempIndoor, TempIndoorMongoDB>();
         builder.Services.AddScoped<ITempIndoorAverage, TempIndoorAverageMongoDB>();
-        builder.Services.AddControllers();
+        builder.Services.AddScoped<IUser, User>();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "JWT", Version = "v1" });
         });
+
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+
+
         builder.Services.AddSwaggerGen();
         var app = builder.Build();
+
+        // Generate new API key if needed
+        ApiKeyGenerator.GenerateNewApiKeyIfNeeded();
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -29,7 +43,10 @@ public class Program
             app.UseSwaggerUI();
         }
         app.UseHttpsRedirection();
-        app.UseAuthorization();
+
+        // Auth
+        app.UseAuthentication();
+
         app.MapControllers();
         app.Run();
     }

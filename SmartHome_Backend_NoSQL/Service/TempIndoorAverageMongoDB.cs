@@ -21,6 +21,12 @@ namespace SmartHome_Backend_NoSQL.Service
                wsDatabaseSettings.Value.TempAverageCollectionName);
         }
         #endregion
+
+        /// <summary>
+        /// Fügt ein neues IndoorTempAveregaModel-Objekt hinzu.
+        /// </summary>
+        /// <param name="weather">Das Objekt, das die Temperaturdaten enthält.</param>
+        /// <remarks>Wirft eine NullReferenceException, wenn das übergebene Objekt Null ist.</remarks>
         public void Add(IndoorTempAveregaModel weather)
         {
             try
@@ -34,6 +40,12 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        /// <summary>
+        /// Gibt das IndoorTempAveregaModel-Objekt zurück, das dem angegebenen Tag und Zeitpunkt entspricht.
+        /// </summary>
+        /// <param name="dayTime">Der Tag und Zeitpunkt, für den das IndoorTempAveregaModel-Objekt abgerufen werden soll.</param>
+        /// <returns>Das IndoorTempAveregaModel-Objekt, das dem angegebenen Tag und Zeitpunkt entspricht, oder Null, wenn kein entsprechendes Objekt gefunden wurde.</returns>
+        /// <remarks>Wirft eine MongoException, wenn ein Fehler beim Zugriff auf die Datenbank auftritt.</remarks>
         public IndoorTempAveregaModel Get(string dayTime)
         {
             try

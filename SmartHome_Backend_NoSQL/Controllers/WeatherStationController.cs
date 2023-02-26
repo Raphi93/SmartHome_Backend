@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartHome_Backend_NoSQL.Models;
 using SmartHome_Backend_NoSQL.Service;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using ApiKeyCustomAttributes.Attributes;
 
 namespace SmartHome_Backend_NoSQL.Controllers
 {
+    
     [Route("api/[controller]")]
+    [ApiKey]
     [ApiController]
     public class WeatherStationController : ControllerBase
     {
@@ -20,7 +21,10 @@ namespace SmartHome_Backend_NoSQL.Controllers
         }
         #endregion
 
-        // GET: api/<WeatherStationController>
+        /// <summary>
+        /// Action Methode zum Abrufen aller Wetterstationen
+        /// </summary>
+        /// <returns>Eine ActionResult-Instanz, die eine Liste von WeatherSationModel-Objekten oder NotFound zurückgibt, wenn ein Fehler aufgetreten ist</returns>
         [HttpGet]
         public ActionResult<List<WeatherSationModel>> GetAll()
         {
@@ -35,7 +39,12 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-        // GET api/<WeatherStationController>/5
+        /// <summary>
+        /// Ruft eine Wetterstationsmessung für ein bestimmtes Datum ab.
+        /// </summary>
+        /// <param name="dayTime">Das Datum der Wetterstationsmessung im Format "YYYY-MM-DD".</param>
+        /// <returns>Eine ActionResult-Instanz, die entweder eine WeatherSationModel-Instanz enthält oder NotFound zurückgibt, wenn keine Messung für das angegebene Datum gefunden wurde.</returns>
+        /// <remarks>Wirft eine Ausnahme, wenn ein Fehler auftritt.</remarks>
         [HttpGet("Datum")]
         public ActionResult<WeatherSationModel> Get(string dayTime)
         {
@@ -53,7 +62,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-        // POST api/<WeatherStationController>
+        /// <summary>
+        /// Fügt ein neues Wetterobjekt hinzu.
+        /// </summary>
+        /// <param name="weather">Das Objekt, das die Wetterdaten enthält.</param>
+        /// <returns>Ein IActionResult-Objekt, das den Status der Anfrage widerspiegelt.</returns>
         [HttpPost]
         public IActionResult Post(WeatherSationModel weather)
         {
@@ -69,7 +82,12 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-        // PUT api/<WeatherStationController>/5
+        /// <summary>
+        /// Aktualisiert ein Wetterobjekt für den angegebenen Tag und Zeitpunkt.
+        /// </summary>
+        /// <param name="dayTime">Der Tag und Zeitpunkt, für den das Wetter aktualisiert werden soll.</param>
+        /// <param name="weather">Das Objekt, das die aktualisierten Wetterdaten enthält.</param>
+        /// <returns>Ein IActionResult-Objekt, das den Status der Anfrage widerspiegelt.</returns>
         [HttpPut("Datum")]
         public IActionResult Update(string dayTime, WeatherSationModel weather)
         {

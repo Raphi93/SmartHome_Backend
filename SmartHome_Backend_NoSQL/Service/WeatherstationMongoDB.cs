@@ -34,9 +34,9 @@ namespace SmartHome_Backend_NoSQL.Service
         #endregion
 
         /// <summary>
-        /// GetAll bringt alle daten 
+        /// Ruft alle Wetterstation-Datensätze aus der Datenbank ab.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Eine Liste von Wetterstation-Modellen oder null, wenn ein Fehler aufgetreten ist.</returns>
         public List<WeatherSationModel> GetAll()
         {
             try
@@ -53,10 +53,10 @@ namespace SmartHome_Backend_NoSQL.Service
         }
 
         /// <summary>
-        /// Bringt die Daten mit dem Datum
+        /// Ruft das WeatherSationModel-Objekt für den angegebenen Zeitpunkt ab.
         /// </summary>
-        /// <param name="daytime"></param>
-        /// <returns></returns>
+        /// <param name="daytime">Der Zeitpunkt, für den das Wetter abgerufen werden soll.</param>
+        /// <returns>Das WeatherSationModel-Objekt für den angegebenen Zeitpunkt oder null, wenn ein Fehler auftritt.</returns>
         public WeatherSationModel Get(string daytime)
         {
             try
@@ -71,9 +71,9 @@ namespace SmartHome_Backend_NoSQL.Service
         }
 
         /// <summary>
-        /// ADD Mtehode wo eine neue zeile einfügt
+        /// Fügt ein neues WeatherSationModel-Objekt hinzu.
         /// </summary>
-        /// <param name="weather"></param>
+        /// <param name="weather">Das WeatherSationModel-Objekt, das hinzugefügt werden soll.</param>
         public void Add(WeatherSationModel weather)
         {
             var get = _weather.Find(x => true).Count();
@@ -103,7 +103,7 @@ namespace SmartHome_Backend_NoSQL.Service
             {
                 _weather.InsertOne(weather);
                 id--;
-                if (id > 1)
+                if (id > 0)
                 {
                     AverageCalc(id, weather);
                 }
@@ -117,10 +117,9 @@ namespace SmartHome_Backend_NoSQL.Service
 
 
         /// <summary>
-        /// Update wo die daten Veränder
+        /// Aktualisiert das WeatherSationModel-Objekt mit der angegebenen "dayTime".
         /// </summary>
-        /// <param name="dayTime"></param>
-        /// <param name="weather"></param>
+        /// <param name="dayTime">Die "dayTime" des zu aktualisierenden Objekts.</param>
         public void Update(string dayTime, WeatherSationModel weather)
         {
             try
@@ -167,17 +166,20 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
-        /// <summary>
-        /// Check SonneDauer wo die daten Prüft und das richtige resultat zurückgibt
-        /// </summary>
-        /// <param name="weather"></param>
-        /// <param name="dayTime"></param>
-        /// <returns></returns>
+        ///<summary>
+        ///Diese Methode überprüft, ob die Sonnenscheindauer an einem bestimmten Tag kürzer als 5 Minuten ist.
+        ///Wenn ja, wird die Anzahl der sonnigen Tage erhöht.
+        ///Anschließend wird die Sonnenscheindauer des aktuellen Tages berechnet, indem die Sonnenscheindauer
+        ///des Vortages sowie die Anzahl der sonnigen Tage seit dem letzten Regen berücksichtigt werden.
+        ///</summary>
+        ///<param name="weather">Das Wetterobjekt, dessen Sonnenscheindauer überprüft wird.</param>
+        ///<param name="dayTime">Die Zeit des Tages, an dem das Wetterobjekt gemessen wurde.</param>
+        ///<returns>Die berechnete Sonnenscheindauer des aktuellen Tages in Stunden.</returns>
         private double CheckSunDur(WeatherSationModel weather, string dayTime)
         {
-            if (weather.sunDuration < 10)
+            int suny = Convert.ToInt32(weather.sunDurSOP);
+            if (weather.sunDuration < 5)
             { 
-                int suny = Convert.ToInt32(weather.sunDurSOP);
                 suny++;
                 weather.sunDurSOP = suny;
             }
@@ -185,30 +187,50 @@ namespace SmartHome_Backend_NoSQL.Service
             double lastDaySun = (Double)(_weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.sunDuration));
             double lastDayMin = lastDaySun * 60 + (1600 * weather.sunDurSOP);
             double sun = (Double)(weather.sunDuration - lastDayMin);
+            if (sun < 0)
+            {
+                suny--;
+                weather.sunDurSOP = suny;
+                sun = sun * 1600;
+            }
             sun = sun / 60;
             return sun;
         }
 
-        /// <summary>
-        /// Prüft wegen des Regens dases Eine Korecktes Resultate zurückgibt
-        /// </summary>
-        /// <param name="weather"></param>
-        /// <param name="dayTime"></param>
-        /// <returns></returns>
+        ///<summary>
+        ///Diese Methode berechnet die Regenmenge für den aktuellen Tag basierend auf den
+        ///bisherigen Niederschlagsdaten und der Sonnenscheindauer.
+        ///</summary>
+        ///<param name="weather">Das Wetterobjekt, dessen Regenmenge berechnet wird.</param>
+        ///<param name="dayTime">Die Zeit des Tages, an dem das Wetterobjekt gemessen wurde.</param>
+        ///<returns>Die berechnete Regenmenge des aktuellen Tages in Millimetern.</returns>
         public double CheckRain(WeatherSationModel weather, string dayTime)
         {
-            if (weather.rain < 10)
+            int rains = Convert.ToInt32(weather.rainDurSOP);
+            if (weather.rain < 1)
             {
-                int rains = Convert.ToInt32(weather.rainDurSOP);
                 rains++;
                 weather.rainDurSOP = rains;
             }
 
             var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
-            double rain = (double)(weather.rain - lastRain) + (1600 * weather.sunDurSOP); ;
+            double rain = (double)(weather.rain - lastRain) + (1600 * weather.sunDurSOP);
+            if (rain < 0)
+            {
+                rains--;
+                weather.sunDurSOP = rains;
+                rain = rain * 1600;
+            }
             return rain;
         }
 
+
+        ///<summary>
+        ///Diese Methode berechnet die maximale Luftfeuchtigkeit an einem bestimmten Tag.
+        ///</summary>
+        ///<param name="dayTime">Die Zeit des Tages, für den die maximale Luftfeuchtigkeit berechnet wird.</param>
+        ///<param name="weather">Das Wetterobjekt, das die aktuellen Luftfeuchtigkeitsdaten enthält.</param>
+        ///<returns>Die berechnete maximale Luftfeuchtigkeit des Tages oder null, wenn keine Daten verfügbar sind.</returns>
         private double? CalcHumidityMax(string dayTime, WeatherSationModel weather)
         {
             var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
@@ -222,32 +244,52 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        ///<summary>
+        ///Diese Methode berechnet die minimale Luftfeuchtigkeit an einem bestimmten Tag.
+        ///</summary>
+        ///<param name="dayTime">Die Zeit des Tages, für den die minimale Luftfeuchtigkeit berechnet wird.</param>
+        ///<param name="weather">Das Wetterobjekt, das die aktuellen Luftfeuchtigkeitsdaten enthält.</param>
+        ///<returns>Die berechnete minimale Luftfeuchtigkeit des Tages oder null, wenn keine Daten verfügbar sind.</returns>
         private double? CalcHumidityMin(string dayTime, WeatherSationModel weather)
         {
-            var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
-            if (get.humidityMin > weather.humidity)
+            var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault(); // Abrufen der Wetterdaten für den angegebenen Tag
+            if (get.humidityMin > weather.humidity) // Überprüfen, ob die aktuelle Luftfeuchtigkeit kleiner als die bisherige minimale Luftfeuchtigkeit ist
             {
-                return (float)weather.humidity;
+                return (float)weather.humidity; // Rückgabe der aktuellen Luftfeuchtigkeit als neue minimale Luftfeuchtigkeit
             }
             else
             {
-                return (float)get.humidityMin;
+                return (float)get.humidityMin; // Rückgabe der bisherigen minimalen Luftfeuchtigkeit
             }
         }
 
+
+        ///<summary>
+        ///Diese Methode berechnet die maximale Temperatur an einem bestimmten Tag.
+        ///</summary>
+        ///<param name="dayTime">Die Zeit des Tages, für den die maximale Temperatur berechnet wird.</param>
+        ///<param name="weather">Das Wetterobjekt, das die aktuellen Temperaturdaten enthält.</param>
+        ///<returns>Die berechnete maximale Temperatur des Tages.</returns>
         public float CalcTempMax(string dayTime, WeatherSationModel weather)
         {
-            var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
-            if (get.tempMax < weather.temp)
+            var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault(); // Abrufen der Wetterdaten für den angegebenen Tag
+            if (get.tempMax < weather.temp) // Überprüfen, ob die aktuelle Temperatur größer als die bisherige maximale Temperatur ist
             {
-                return (float)weather.temp;
+                return (float)weather.temp; // Rückgabe der aktuellen Temperatur als neue maximale Temperatur
             }
             else
             {
-                return (float)get.tempMax;
+                return (float)get.tempMax; // Rückgabe der bisherigen maximalen Temperatur
             }
         }
 
+        ///<summary>
+        ///Diese Methode berechnet die minimale Temperatur für einen bestimmten Tag.
+        ///Sie vergleicht die aktuelle Temperatur mit der minimalen Temperatur des Vortages und gibt das Minimum zurück.
+        ///</summary>
+        ///<param name="dayTime">Die Zeit des Tages, für den die minimale Temperatur berechnet wird.</param>
+        ///<param name="weather">Das Wetterobjekt, dessen Temperatur überprüft wird.</param>
+        ///<returns>Die minimale Temperatur für den angegebenen Tag.</returns>
         public float CalcTempMin(string dayTime, WeatherSationModel weather)
         {
             var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
@@ -261,6 +303,13 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        ///<summary>
+        ///Diese Methode berechnet die maximale Windgeschwindigkeit für einen bestimmten Tag.
+        ///Sie vergleicht die aktuelle Windgeschwindigkeit mit der maximalen Windgeschwindigkeit des Vortages und gibt das Maximum zurück.
+        ///</summary>
+        ///<param name="dayTime">Die Zeit des Tages, für den die maximale Windgeschwindigkeit berechnet wird.</param>
+        ///<param name="weather">Das Wetterobjekt, dessen Windgeschwindigkeit überprüft wird.</param>
+        ///<returns>Die maximale Windgeschwindigkeit für den angegebenen Tag.</returns>
         public float CalcWindMax(string dayTime, WeatherSationModel weather)
         {
             var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
@@ -274,6 +323,15 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        ///<summary>
+        ///Diese Methode berechnet die minimale Windgeschwindigkeit an einem bestimmten Tag.
+        ///Es wird das Wetterobjekt mit der angegebenen dayTime aus der Liste abgerufen und verglichen,
+        ///ob die minimale Windgeschwindigkeit im aktuellen Wetterobjekt kleiner ist.
+        ///Falls dies zutrifft, wird der Wert aus dem aktuellen Wetterobjekt zurückgegeben, ansonsten der Wert aus der Liste.
+        ///</summary>
+        ///<param name="dayTime">Die Zeit des Tages, an dem das Wetterobjekt gemessen wurde.</param>
+        ///<param name="weather">Das Wetterobjekt, dessen minimale Windgeschwindigkeit berechnet wird.</param>
+        ///<returns>Die minimale Windgeschwindigkeit des Tages.</returns>
         public float CalcWindMin(string dayTime, WeatherSationModel weather)
         {
             var get = _weather.Find(x => x.daytime == dayTime).FirstOrDefault();
@@ -287,6 +345,12 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
+        /// <summary>
+        /// Berechnet den Durchschnittswert der Temperatur, Windgeschwindigkeit und Luftfeuchtigkeit der letzten Wetteraufzeichnungen
+        /// und aktualisiert die gegebene Wetteraufzeichnung mit diesen Werten. Löscht dann alle Einträge aus der Average Collection.
+        /// </summary>
+        /// <param name="id">Die ID des zu aktualisierenden Wetters.</param>
+        /// <param name="weathers">Das zu aktualisierende Wetterobjekt.</param>
         public void AverageCalc(int id, WeatherSationModel weathers)
         {
             var yesterday = _weather.Find(x => x.id == id).FirstOrDefault();

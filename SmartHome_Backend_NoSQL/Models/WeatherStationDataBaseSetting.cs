@@ -13,5 +13,13 @@
         public string TempCollectionName { get; set; } = null!;
 
         public string TempAverageCollectionName { get; set; } = null!;
+
+        public string UserCollectionName { get; set; } = null!;
     }
+
+    public class CollectionSettings
+    {
+        public string CollectionName { get; set; } = null!;
+    }
+
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApiKeyCustomAttributes.Attributes;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartHome_Backend_NoSQL.Models;
 using SmartHome_Backend_NoSQL.Service;
 
@@ -7,6 +9,7 @@ using SmartHome_Backend_NoSQL.Service;
 namespace SmartHome_Backend_NoSQL.Controllers
 {
     [Route("api/[controller]")]
+    [ApiKey]
     [ApiController]
     public class WeatherAverageController : ControllerBase
     {
@@ -20,7 +23,12 @@ namespace SmartHome_Backend_NoSQL.Controllers
         }
         #endregion
 
-        // GET api/<WeatherStationController>/5
+        /// <summary>
+        /// Gibt den durchschnittlichen Wetterdaten für den angegebenen Tag zurück.
+        /// </summary>
+        /// <param name="dayTime">Das Datum, für das die Wetterdaten abgerufen werden sollen.</param>
+        /// <returns>Die durchschnittlichen Wetterdaten für den angegebenen Tag.</returns>
+        /// <remarks>Wenn keine Wetterdaten für den angegebenen Tag gefunden werden können, wird NotFound zurückgegeben.</remarks>
         [HttpGet("{ID}")]
         public ActionResult<WeatherAverageModel> Get(string dayTime)
         {
@@ -38,7 +46,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-        // POST api/<WeatherStationController>
+        ///<summary>
+        /// Erstellt eine neue Wetterdurchschnittsdatensatz im System.
+        ///</summary>
+        ///<param name="weather">Die Wetterdurchschnittsdatensatz, die erstellt werden soll.</param>
+        ///<remarks>Die Wetterdurchschnittsdatensatz wird in der Datenbank gespeichert.</remarks>
         [HttpPost]
         public void Post(WeatherAverageModel weather)
         {

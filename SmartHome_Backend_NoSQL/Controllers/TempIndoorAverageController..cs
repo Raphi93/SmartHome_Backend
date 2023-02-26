@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApiKeyCustomAttributes.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using SmartHome_Backend_NoSQL.Models;
 using SmartHome_Backend_NoSQL.Service;
@@ -6,6 +6,7 @@ using SmartHome_Backend_NoSQL.Service;
 namespace SmartHome_Backend_NoSQL.Controllers
 {
     [Route("api/[controller]")]
+    [ApiKey]
     [ApiController]
     public class TempIndoorAverageController : ControllerBase
     {
@@ -18,7 +19,13 @@ namespace SmartHome_Backend_NoSQL.Controllers
         }
         #endregion
 
-        // GET api/<WeatherStationController>/5
+        /// <summary>
+        /// Ruft den durchschnittlichen Innenraumtemperaturwert für einen bestimmten Tag und eine bestimmte Uhrzeit ab.
+        /// </summary>
+        /// <param name="dayTime">Der Tag und die Uhrzeit, für die der Innenraumtemperaturwert abgerufen werden soll.</param>
+        /// <returns>Der durchschnittliche Innenraumtemperaturwert für den angegebenen Tag und die angegebene Uhrzeit.</returns>
+        /// <remarks>Falls kein Wert für den angegebenen Tag und die angegebene Uhrzeit gefunden wird, wird NotFound zurückgegeben.</remarks>
+
         [HttpGet("{ID}")]
         public ActionResult<IndoorTempAveregaModel> Get(string dayTime)
         {
@@ -36,7 +43,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-        // POST api/<WeatherStationController>
+        ///<summary>
+        /// Fügt eine neue Indoor Temperatur Durchschnittsdatensatz hinzu.
+        ///</summary>
+        ///<param name="weather">Indoor Temperatur Durchschnittsdatensatz.</param>
+        ///<returns>Nichts wird zurückgegeben.</returns>
         [HttpPost]
         public void Post(IndoorTempAveregaModel weather)
         {
