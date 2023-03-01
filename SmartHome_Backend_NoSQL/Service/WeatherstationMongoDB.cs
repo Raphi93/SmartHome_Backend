@@ -80,7 +80,6 @@ namespace SmartHome_Backend_NoSQL.Service
  
             int id = Convert.ToInt32(get);
             if (id != 0)
-
             {
                 var oldDuk = _weather.Find(x => x.id == id).FirstOrDefault();
                 weather.sunDurSOP = oldDuk.sunDurSOP;
@@ -191,7 +190,7 @@ namespace SmartHome_Backend_NoSQL.Service
             {
                 suny--;
                 weather.sunDurSOP = suny;
-                sun = sun * 1600;
+                sun = sun + 1600;
             }
             sun = sun / 60;
             return sun;
@@ -214,12 +213,13 @@ namespace SmartHome_Backend_NoSQL.Service
             }
 
             var lastRain = _weather.Find(x => x.daytime != dayTime).ToList().Sum(x => x.rain);
-            double rain = (double)(weather.rain - lastRain) + (1600 * weather.sunDurSOP);
+            double rain = (double)(weather.rain - lastRain) + (1600 * weather.rainDurSOP);
+
             if (rain < 0)
             {
                 rains--;
                 weather.sunDurSOP = rains;
-                rain = rain * 1600;
+                rain = rain + 1600;
             }
             return rain;
         }
@@ -366,13 +366,15 @@ namespace SmartHome_Backend_NoSQL.Service
                     weathers.wind = averageWind;
                     weathers.humidity = averageHumidity;
                     weathers.daytime = yesterday.daytime;
-                    weathers.rain = weathers.rain;
+                    weathers.rain = yesterday.rain;
                     weathers.raining = yesterday.raining;
-                    weathers.sunDuration = weathers.sunDuration;
+                    weathers.sunDuration = yesterday.sunDuration;
                     weathers.daytime = yesterday.daytime;
+                    weathers.rainDurSOP = yesterday.rainDurSOP;
+                    weathers.sunDurSOP = yesterday.sunDurSOP;
                     weathers.id = id;
                     weathers._id = yesterday._id;
-                    Update(yesterday.daytime, weathers);
+                    _weather.ReplaceOne(x => x.daytime == yesterday.daytime, weathers);
                     _average.DeleteMany(x => true);
                 }
             }

@@ -38,8 +38,8 @@ namespace ApiKeyCustomAttributes.Attributes
             {
                 context.Result = new ContentResult()
                 {
-                    StatusCode = 401,
-                    Content = "Api Key was not provided"
+                    StatusCode = 404,
+                    Content = "Not Found"
                 };
                 return;
             }
@@ -51,8 +51,8 @@ namespace ApiKeyCustomAttributes.Attributes
             {
                 context.Result = new ContentResult()
                 {
-                    StatusCode = 401,
-                    Content = "Api Key is not valid"
+                    StatusCode = 404,
+                    Content = "Not Found"
                 };
                 return;
             }
