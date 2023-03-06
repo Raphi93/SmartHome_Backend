@@ -1,4 +1,4 @@
-﻿using SmartHome_Backend_NoSQL.Models;
+﻿using SmartHome_Backend_NoSQL.Controllers;
 
 namespace SmartHome_Backend_NoSQL.Service
 {

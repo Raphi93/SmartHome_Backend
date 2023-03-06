@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using SmartHome_Backend_NoSQL.Controllers;
 using SmartHome_Backend_NoSQL.Models;
 using System;
 

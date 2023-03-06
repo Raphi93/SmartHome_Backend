@@ -1,10 +1,7 @@
 using SmartHome_Backend_NoSQL.Service;
 using SmartHome_Backend_NoSQL.Models;
+using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
-using ApiKeyCustomAttributes.Attributes;
-using System.Text;
-using Microsoft.Extensions.Configuration;
-using SmartHome_Backend_NoSQL.Atrributes;
 
 public class Program
 {
@@ -14,6 +11,14 @@ public class Program
 
         builder.Services.Configure<WeatherStationDataBaseSetting>(
                   builder.Configuration.GetSection("WeatherStationDatabase"));
+
+        //builder.WebHost.UseKestrel(options =>
+        //{
+        //    options.ListenAnyIP(443, listenOptions =>
+        //    {
+        //        listenOptions.UseHttps("/home/test/Desktop/Cert/server.crt", "/home/test/Desktop/Cert/server.key");
+        //    });
+        //});
 
         builder.Services.AddScoped<IWeatherstation, WeatherstationMongoDB>();
         builder.Services.AddScoped<IWeatherAverage, WeatherAverageMongoDB>();
@@ -30,7 +35,6 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
 
-
         builder.Services.AddSwaggerGen();
         var app = builder.Build();
 
@@ -43,6 +47,9 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+
+
         app.UseHttpsRedirection();
 
         // Auth

@@ -1,7 +1,6 @@
 ﻿using ApiKeyCustomAttributes.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartHome_Backend_NoSQL.Models;
 using SmartHome_Backend_NoSQL.Service;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

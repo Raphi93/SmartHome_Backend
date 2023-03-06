@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using SmartHome_Backend_NoSQL.Controllers;
 using SmartHome_Backend_NoSQL.Models;
 using System;
 using System.Linq;
@@ -365,6 +366,13 @@ namespace SmartHome_Backend_NoSQL.Service
                     weathers.temp = averageTemp;
                     weathers.wind = averageWind;
                     weathers.humidity = averageHumidity;
+
+                    weathers.tempMin = yesterday.tempMin;
+                    weathers.tempMax = yesterday.tempMax;
+                    weathers.windMin = yesterday.windMin;
+                    weathers.windMax = yesterday. windMax;
+                    weathers.humidityMin = yesterday.humidityMin;
+                    weathers.humidityMax = yesterday.humidityMax;
                     weathers.daytime = yesterday.daytime;
                     weathers.rain = yesterday.rain;
                     weathers.raining = yesterday.raining;
