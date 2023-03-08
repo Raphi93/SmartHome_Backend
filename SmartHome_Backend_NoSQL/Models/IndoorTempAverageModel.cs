@@ -4,24 +4,19 @@ using System.Text.Json.Serialization;
 
 namespace SmartHome_Backend_NoSQL.Models
 {
-    public class WeatherAverageModel
+    public class IndoorTempAverageModel
     {
-
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? _id { get; set; }
 
-        [BsonElement("Temp")]
-        [JsonPropertyName("temp")]
-        public double? temp { get; set; }
+        [BsonElement("WallTemp")]
+        [JsonPropertyName("wallTemp")]
+        public double? wallTemp { get; set; }
 
-        [BsonElement("Wind")]
-        [JsonPropertyName("wind")]
-        public double? wind { get; set; }
-
-        [BsonElement("Humidity")]
-        [JsonPropertyName("humidity")]
-        public double? humidity { get; set; }
+        [BsonElement("FloorTemp")]
+        [JsonPropertyName("floorTemp")]
+        public double? floorTemp { get; set; }
 
         [BsonElement("DayTime")]
         [JsonPropertyName("dayTime")]

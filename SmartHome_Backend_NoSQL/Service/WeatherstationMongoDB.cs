@@ -4,6 +4,7 @@ using SmartHome_Backend_NoSQL.Controllers;
 using SmartHome_Backend_NoSQL.Models;
 using System;
 using System.Linq;
+using WeatherAverageModel = SmartHome_Backend_NoSQL.Controllers.WeatherAverageModel;
 
 namespace SmartHome_Backend_NoSQL.Service
 {
@@ -27,10 +28,6 @@ namespace SmartHome_Backend_NoSQL.Service
 
             _average = mongoDatabase.GetCollection<WeatherAverageModel>(
                wsDatabaseSettings.Value.AverageCollectionName);
-        }
-
-        public WeatherstationMongoDB()
-        {
         }
         #endregion
 

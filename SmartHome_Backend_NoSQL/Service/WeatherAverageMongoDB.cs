@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using SmartHome_Backend_NoSQL.Controllers;
 using SmartHome_Backend_NoSQL.Models;
 using System;
+using WeatherAverageModel = SmartHome_Backend_NoSQL.Controllers.WeatherAverageModel;
 
 namespace SmartHome_Backend_NoSQL.Service
 {

@@ -34,6 +34,10 @@ namespace SmartHome_Backend_NoSQL.Models
         [JsonPropertyName("floorTempMin")]
         public double? floorTempMin { get; set; }
 
+        [BsonElement("HeizungSollte")]
+        [JsonPropertyName("heizungSollte")]
+        public double? heizungSollte { get; set; }
+
         [BsonElement("DayTime")]
         [JsonPropertyName("dayTime")]
         public string? daytime { get; set; }

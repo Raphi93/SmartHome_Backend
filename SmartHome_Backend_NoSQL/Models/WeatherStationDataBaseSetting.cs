@@ -15,6 +15,8 @@
         public string TempAverageCollectionName { get; set; } = null!;
 
         public string UserCollectionName { get; set; } = null!;
+        public string SaveUpCollectionName { get; set; } = null!;
+        public string LightsCollectionName { get; set; } = null!;
     }
 
     public class CollectionSettings

@@ -1,6 +1,5 @@
 using SmartHome_Backend_NoSQL.Service;
 using SmartHome_Backend_NoSQL.Models;
-using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
 public class Program
@@ -25,6 +24,7 @@ public class Program
         builder.Services.AddScoped<ITempIndoor, TempIndoorMongoDB>();
         builder.Services.AddScoped<ITempIndoorAverage, TempIndoorAverageMongoDB>();
         builder.Services.AddScoped<IUser, User>();
+        builder.Services.AddScoped<ISaveUp, SaveUp_MongoDB>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
