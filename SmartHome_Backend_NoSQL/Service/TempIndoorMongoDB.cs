@@ -8,7 +8,7 @@ namespace SmartHome_Backend_NoSQL.Service
     {
         #region Prop und Kunstrucktor
         private readonly IMongoCollection<IndoorTempModel> _temp;
-        private readonly IMongoCollection<IndoorTempAveregaModel> _average;
+        private readonly IMongoCollection<IndoorTempAverageModel> _average;
 
         public TempIndoorMongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
         {
@@ -21,7 +21,7 @@ namespace SmartHome_Backend_NoSQL.Service
             _temp = mongoDatabase.GetCollection<IndoorTempModel>(
                wsDatabaseSettings.Value.TempCollectionName);
 
-            _average = mongoDatabase.GetCollection<IndoorTempAveregaModel>(
+            _average = mongoDatabase.GetCollection<IndoorTempAverageModel>(
                wsDatabaseSettings.Value.TempAverageCollectionName);
         }
         #endregion

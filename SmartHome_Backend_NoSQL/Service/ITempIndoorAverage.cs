@@ -4,7 +4,7 @@ namespace SmartHome_Backend_NoSQL.Service
 {
     public interface ITempIndoorAverage
     {
-        public IndoorTempAveregaModel Get(string dayTime);
-        public void Add(IndoorTempAveregaModel weather);
+        public IndoorTempAverageModel Get(string dayTime);
+        public void Add(IndoorTempAverageModel weather);
     }
 }

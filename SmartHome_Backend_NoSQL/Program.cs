@@ -15,7 +15,7 @@ public class Program
         //{
         //    options.ListenAnyIP(443, listenOptions =>
         //    {
-        //        listenOptions.UseHttps("/home/test/Desktop/Cert/server.crt", "/home/test/Desktop/Cert/server.key");
+        //        listenOptions.UseHttps("/tmp/server.crt", "/tmp/server.key");
         //    });
         //});
 
@@ -25,6 +25,7 @@ public class Program
         builder.Services.AddScoped<ITempIndoorAverage, TempIndoorAverageMongoDB>();
         builder.Services.AddScoped<IUser, User>();
         builder.Services.AddScoped<ISaveUp, SaveUp_MongoDB>();
+        builder.Services.AddScoped<ILamps, Lamps_MongoDB>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>

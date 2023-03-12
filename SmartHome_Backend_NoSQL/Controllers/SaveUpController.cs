@@ -20,13 +20,12 @@ namespace SmartHome_Backend_NoSQL.Controllers
             _saveUp = saveUp;
         }
 
-        // GET api/<SaveUpController>/5
-        [HttpGet("{id}")]
-        public ActionResult<List<SaveUP>> GetAll()
-        { 
+        [HttpGet("{Name}")]
+        public ActionResult<List<SaveUP>> GetAll(string name)
+        {
             try
             {
-                return _saveUp.GetAll();
+                return _saveUp.GetAll(name);
             }
             catch (Exception ex)
             {
@@ -51,7 +50,6 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-
         // DELETE api/<SaveUpController>/5
         [HttpDelete("{id}")]
         public void Delete(string id)
@@ -66,11 +64,12 @@ namespace SmartHome_Backend_NoSQL.Controllers
             }
         }
 
-        public void DeleteAll()
+        [HttpDelete("Name")]
+        public void DeleteAll(string name)
         {
             try
             {
-                _saveUp.DeleteAll();
+                _saveUp.DeleteAll(name);
             }
             catch (Exception ex)
             {

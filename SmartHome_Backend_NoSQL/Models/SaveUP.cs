@@ -26,5 +26,9 @@ namespace SmartHome_Backend_NoSQL.Models
         [BsonElement("Datum")]
         [JsonPropertyName("datum")]
         public DateTime Datum { get; set; }
+
+        [BsonElement("Name")]
+        [JsonPropertyName("name")]
+        public string? Name { get; set; }
     }
 }

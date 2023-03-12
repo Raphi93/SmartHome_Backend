@@ -21,7 +21,7 @@ namespace SmartHome_Backend_NoSQL.Models
         [BsonElement("Blue")]
         [JsonPropertyName("blue")]
         public int? Blue { get; set; } = 0;
-
+        
         [BsonElement("Green")]
         [JsonPropertyName("green")]
         public int? Green { get; set; } = 0;

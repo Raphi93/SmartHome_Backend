@@ -7,7 +7,7 @@ namespace SmartHome_Backend_NoSQL.Service
     public class TempIndoorAverageMongoDB : ITempIndoorAverage
     {
         #region Prop und Kunstrucktor
-        private readonly IMongoCollection<IndoorTempAveregaModel> _average;
+        private readonly IMongoCollection<IndoorTempAverageModel> _average;
 
         public TempIndoorAverageMongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
         {
@@ -17,7 +17,7 @@ namespace SmartHome_Backend_NoSQL.Service
             var mongoDatabase = mongoClient.GetDatabase(
                 wsDatabaseSettings.Value.DatabaseName);
 
-            _average = mongoDatabase.GetCollection<IndoorTempAveregaModel>(
+            _average = mongoDatabase.GetCollection<IndoorTempAverageModel>(
                wsDatabaseSettings.Value.TempAverageCollectionName);
         }
         #endregion
@@ -27,7 +27,7 @@ namespace SmartHome_Backend_NoSQL.Service
         /// </summary>
         /// <param name="weather">Das Objekt, das die Temperaturdaten enthält.</param>
         /// <remarks>Wirft eine NullReferenceException, wenn das übergebene Objekt Null ist.</remarks>
-        public void Add(IndoorTempAveregaModel weather)
+        public void Add(IndoorTempAverageModel weather)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace SmartHome_Backend_NoSQL.Service
         /// <param name="dayTime">Der Tag und Zeitpunkt, für den das IndoorTempAveregaModel-Objekt abgerufen werden soll.</param>
         /// <returns>Das IndoorTempAveregaModel-Objekt, das dem angegebenen Tag und Zeitpunkt entspricht, oder Null, wenn kein entsprechendes Objekt gefunden wurde.</returns>
         /// <remarks>Wirft eine MongoException, wenn ein Fehler beim Zugriff auf die Datenbank auftritt.</remarks>
-        public IndoorTempAveregaModel Get(string dayTime)
+        public IndoorTempAverageModel Get(string dayTime)
         {
             try
             {

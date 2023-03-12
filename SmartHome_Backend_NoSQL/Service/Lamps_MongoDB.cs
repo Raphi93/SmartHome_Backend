@@ -5,10 +5,10 @@ using System;
 
 namespace SmartHome_Backend_NoSQL.Service
 {
-    public class LightsCollectionName : ILamps
+    public class Lamps_MongoDB : ILamps
     {
         private readonly IMongoCollection<LichterModels> _lichter;
-        public LightsCollectionName(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
+        public Lamps_MongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
         {
             var mongoClient = new MongoClient(
                 wsDatabaseSettings.Value.ConnectionString);

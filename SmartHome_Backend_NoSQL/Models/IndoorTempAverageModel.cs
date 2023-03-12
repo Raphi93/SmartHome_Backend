@@ -21,5 +21,6 @@ namespace SmartHome_Backend_NoSQL.Models
         [BsonElement("DayTime")]
         [JsonPropertyName("dayTime")]
         public string? daytime { get; set; }
+
     }
 }

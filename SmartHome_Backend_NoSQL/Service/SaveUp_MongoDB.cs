@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SmartHome_Backend_NoSQL.Models;
+using System.Runtime.CompilerServices;
 
 namespace SmartHome_Backend_NoSQL.Service
 {
@@ -32,11 +33,11 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
-        public void DeleteAll()
+        public void DeleteAll(string name)
         {
             try
             {
-                _saveUp.DeleteMany(x => true);
+                _saveUp.DeleteMany(x => x.Name == name);
             }
             catch (MongoException ex)
             {
@@ -56,11 +57,11 @@ namespace SmartHome_Backend_NoSQL.Service
             }
         }
 
-        public List<SaveUP> GetAll()
+        public List<SaveUP> GetAll(string name)
         {
             try
             {
-                List<SaveUP> get = _saveUp.Find(_ => true).ToList();
+                List<SaveUP> get = _saveUp.Find(x => x.Name == name).ToList();
                 return get;
             }
             catch (MongoException ex)

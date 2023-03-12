@@ -40,7 +40,7 @@ namespace SmartHome_Backend_NoSQL.Service
                 }
                 else
                 {
-                    return "Falsche Angaben";
+                    return "";
                 }
             }
             catch (MongoException ex)

@@ -27,11 +27,11 @@ namespace SmartHome_Backend_NoSQL.Controllers
         /// <remarks>Falls kein Wert für den angegebenen Tag und die angegebene Uhrzeit gefunden wird, wird NotFound zurückgegeben.</remarks>
 
         [HttpGet("{ID}")]
-        public ActionResult<IndoorTempAveregaModel> Get(string dayTime)
+        public ActionResult<IndoorTempAverageModel> Get(string dayTime)
         {
             try
             {
-                IndoorTempAveregaModel weathers = _weather.Get(dayTime);
+                IndoorTempAverageModel weathers = _weather.Get(dayTime);
                 if (weathers == null)
                     return NotFound();
                 return weathers;
@@ -49,7 +49,7 @@ namespace SmartHome_Backend_NoSQL.Controllers
         ///<param name="weather">Indoor Temperatur Durchschnittsdatensatz.</param>
         ///<returns>Nichts wird zurückgegeben.</returns>
         [HttpPost]
-        public void Post(IndoorTempAveregaModel weather)
+        public void Post(IndoorTempAverageModel weather)
         {
             try
             {
