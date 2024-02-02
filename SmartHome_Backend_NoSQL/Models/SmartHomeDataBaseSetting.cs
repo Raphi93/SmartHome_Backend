@@ -1,6 +1,6 @@
 ﻿namespace SmartHome_Backend_NoSQL.Models
 {
-    public class WeatherStationDataBaseSetting
+    public class SmartHomeDataBaseSetting
     {
         public string ConnectionString { get; set; } = null!;
 
@@ -16,7 +16,6 @@
 
         public string UserCollectionName { get; set; } = null!;
         public string SaveUpCollectionName { get; set; } = null!;
-        public string LightsCollectionName { get; set; } = null!;
     }
 
     public class CollectionSettings

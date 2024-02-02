@@ -26,16 +26,16 @@ namespace SmartHome_Backend_NoSQL.Controllers
         ///<returns>Die HTTP-Antwort mit dem generierten API-Schlüssel.</returns>
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Post([FromBody] UserModel user, [FromServices] IConfiguration configuration)
+        public async Task<IActionResult> Post([FromBody] LoginModel user, [FromServices] IConfiguration configuration)
         {
-            var apiKey = _userService.Post(user, configuration);
+            var userModel = _userService.Post(user, configuration);
 
-            if (apiKey == null)
+            if (userModel == null)
             {
                 return NotFound();
             }
 
-            return Ok(apiKey.ToString());
+            return Ok(userModel);
         }
     }
 }

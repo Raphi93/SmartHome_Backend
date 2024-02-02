@@ -15,7 +15,7 @@ namespace SmartHome_Backend_NoSQL.Service
         private readonly IMongoCollection<WeatherSationModel> _weather;
         private readonly IMongoCollection<WeatherAverageModel> _average;
 
-        public WeatherstationMongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
+        public WeatherstationMongoDB(IOptions<SmartHomeDataBaseSetting> wsDatabaseSettings)
         {
             var mongoClient = new MongoClient(
                 wsDatabaseSettings.Value.ConnectionString);

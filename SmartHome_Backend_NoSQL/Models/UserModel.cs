@@ -8,18 +8,36 @@ namespace SmartHome_Backend_NoSQL.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? _id { get; set; }
+        public string? _id { get; set; } = string.Empty;
 
-        [BsonElement("Name")]
-        [JsonPropertyName("name")]
-        public string name { get; set; }
+        [BsonElement("User")]
+        [JsonPropertyName("user")]
+        public string? User { get; set; } = string.Empty;
 
         [BsonElement("Passwort")]
         [JsonPropertyName("passwort")]
-        public string Passwort { get; set; }
+        public string? Passwort { get; set; } = string.Empty;
+
 
         [BsonElement("ApiKey")]
         [JsonPropertyName("apiKey")]
-        public string? ApiKey { get; set; }
+        public string? ApiKey { get; set; } = string.Empty; 
+
+        [BsonElement("Role")]
+        [JsonPropertyName("role")]
+        public string[]? Role { get; set; } = new string[] { };
+
+        [BsonElement("Email")]
+        [JsonPropertyName("email")]
+        public string? Email { get; set; } = string.Empty;
+
+        [BsonElement("Vorname")]
+        [JsonPropertyName("vorname")]
+        public string? Vorname { get; set; } = string.Empty;
+
+        [BsonElement("Nachname")]
+        [JsonPropertyName("nachname")]
+        public string? Nachname { get; set; } = string.Empty;
+
     }
 }

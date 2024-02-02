@@ -8,7 +8,7 @@ namespace SmartHome_Backend_NoSQL.Service
     public class SaveUp_MongoDB : ISaveUp
     {
         private readonly IMongoCollection<SaveUP> _saveUp;
-        public SaveUp_MongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
+        public SaveUp_MongoDB(IOptions<SmartHomeDataBaseSetting> wsDatabaseSettings)
         {
             var mongoClient = new MongoClient(
                 wsDatabaseSettings.Value.ConnectionString);

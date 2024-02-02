@@ -8,8 +8,8 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.Configure<WeatherStationDataBaseSetting>(
-                  builder.Configuration.GetSection("WeatherStationDatabase"));
+        builder.Services.Configure<SmartHomeDataBaseSetting>(
+                  builder.Configuration.GetSection("SmartHomeDataBaseSetting"));
 
         //builder.WebHost.UseKestrel(options =>
         //{
@@ -25,12 +25,11 @@ public class Program
         builder.Services.AddScoped<ITempIndoorAverage, TempIndoorAverageMongoDB>();
         builder.Services.AddScoped<IUser, User>();
         builder.Services.AddScoped<ISaveUp, SaveUp_MongoDB>();
-        builder.Services.AddScoped<ILamps, Lamps_MongoDB>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiKey", Version = "v2" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "xHome", Version = "v2" });
         });
 
         builder.Services.AddControllers();
@@ -48,8 +47,6 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-
 
         app.UseHttpsRedirection();
 

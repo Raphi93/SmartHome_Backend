@@ -10,7 +10,7 @@ namespace SmartHome_Backend_NoSQL.Service
         private readonly IMongoCollection<IndoorTempModel> _temp;
         private readonly IMongoCollection<IndoorTempAverageModel> _average;
 
-        public TempIndoorMongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
+        public TempIndoorMongoDB(IOptions<SmartHomeDataBaseSetting> wsDatabaseSettings)
         {
             var mongoClient = new MongoClient(
                 wsDatabaseSettings.Value.ConnectionString);

@@ -10,7 +10,7 @@ namespace SmartHome_Backend_NoSQL.Service
         private readonly IMongoCollection<UserModel> _user;
         private const string APIKEYNAME = "ApiKey";
 
-        public User(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
+        public User(IOptions<SmartHomeDataBaseSetting> wsDatabaseSettings)
         {
             var mongoClient = new MongoClient(wsDatabaseSettings.Value.ConnectionString);
 
@@ -27,20 +27,23 @@ namespace SmartHome_Backend_NoSQL.Service
         /// <returns>HttpResponseMessage, das den API-Schlüssel enthält, wenn autorisiert, oder eine 401 Unauthorized-Antwort, wenn nicht autorisiert</returns>
         /// <param name="user">Benutzermodell mit Namen und Passwort des Benutzers</param>
         /// <param name="configuration">Instanz der IConfiguration-Klasse, die den API-Schlüssel enthält</param>
-        public string Post(UserModel user, IConfiguration configuration)
+        public UserModel Post(LoginModel user, IConfiguration configuration)
         {
             try
             {
-                var existingUser = _user.Find(x => x.name == user.name).FirstOrDefault();
+                var allUsers = _user.Find(x => true).ToList();
+                var existingUser = _user.Find(x => x.User.Equals(user.User)).FirstOrDefault();
 
                 if (existingUser != null && existingUser.Passwort == user.Passwort)
                 {
                     var apiKey = configuration.GetValue<string>(APIKEYNAME);
-                    return apiKey.ToString();
+
+                    existingUser.ApiKey = apiKey;
+                    return existingUser;
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
             }
             catch (MongoException ex)

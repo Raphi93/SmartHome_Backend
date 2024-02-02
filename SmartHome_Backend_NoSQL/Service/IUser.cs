@@ -5,6 +5,6 @@ namespace SmartHome_Backend_NoSQL.Service
 {
     public interface IUser
     {
-        public string Post(UserModel user, IConfiguration configuration);
+        public UserModel Post (LoginModel user, IConfiguration configuration);
     }
 }

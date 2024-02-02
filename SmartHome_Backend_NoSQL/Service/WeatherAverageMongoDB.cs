@@ -13,7 +13,7 @@ namespace SmartHome_Backend_NoSQL.Service
         #region Prop und Kunstrucktor
         private readonly IMongoCollection<WeatherAverageModel> _average;
 
-        public WeatherAverageMongoDB(IOptions<WeatherStationDataBaseSetting> wsDatabaseSettings)
+        public WeatherAverageMongoDB(IOptions<SmartHomeDataBaseSetting> wsDatabaseSettings)
         {
             var mongoClient = new MongoClient(
                 wsDatabaseSettings.Value.ConnectionString);
